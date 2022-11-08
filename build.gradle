@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files("$rootDir/lib/core-3.3.7.jar")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/']
+        }
+        resources {
+            srcDirs = ['src/resources/']
+        }
+    }
+}
+
+project.configurations.implementation.setCanBeResolved(true)
+jar {
+    manifest {
+        attributes(
+                "Main-Class": "sketchpad.Main",
+                "Class-Path": configurations.implementation.collect { it.name }.join(' ')
+        )
+    }
+    dependsOn('dependencies')
+}
